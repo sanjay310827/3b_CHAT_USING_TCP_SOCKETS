@@ -8,7 +8,99 @@ To write a python program for creating Chat using TCP Sockets Links.
  server
 4. Send and receive the message using the send function in socket.
 ## PROGRAM
-## OUPUT
+CHAT SERVER PROGRAM:
+```
+## OUPUT# chat_server.py
+import socket
+
+# Create socket
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Bind host and port
+host = '127.0.0.1'
+port = 5000
+
+server_socket.bind((host, port))
+
+# Listen for client
+server_socket.listen(1)
+
+print("Waiting for client connection...")
+
+# Accept connection
+client_socket, addr = server_socket.accept()
+
+print("Connected to:", addr)
+
+while True:
+    # Receive message from client
+    client_message = client_socket.recv(1024).decode()
+
+    print("Client:", client_message)
+
+    # Exit condition
+    if client_message.lower() == "bye":
+        break
+
+    # Send message to client
+    message = input("Server: ")
+
+    client_socket.send(message.encode())
+
+    if message.lower() == "bye":
+        break
+
+# Close connection
+client_socket.close()
+server_socket.close()
+```
+
+CHAT CLIENT PROGRAM:
+```
+# chat_client.py
+import socket
+
+# Create socket
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Server details
+host = '127.0.0.1'
+port = 5000
+
+# Connect to server
+client_socket.connect((host, port))
+
+print("Connected to server")
+
+while True:
+    # Send message to server
+    message = input("Client: ")
+
+    client_socket.send(message.encode())
+
+    if message.lower() == "bye":
+        break
+
+    # Receive message from server
+    server_message = client_socket.recv(1024).decode()
+
+    print("Server:", server_message)
+
+    if server_message.lower() == "bye":
+        break
+
+# Close connection
+client_socket.close()
+```
+## OUTPUT
+CHAT SERVER OUTPUT:
+
+<img width="1485" height="881" alt="image" src="https://github.com/user-attachments/assets/9061947e-3e36-4799-b9bb-e2a81e2b9960" />
+
+CHAT CLIENT OUTPUT:
+
+<img width="1484" height="873" alt="image" src="https://github.com/user-attachments/assets/8cf1a70c-5b14-4109-bfa4-eff59cb10de6" />
+
 ## RESULT
 Thus, the python program for creating Chat using TCP Sockets Links was successfully 
 created and executed.
